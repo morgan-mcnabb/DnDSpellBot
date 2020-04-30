@@ -1,4 +1,12 @@
 ﻿using System;
+using Discord;
+using Discord.Net;
+using Discord.Commands;
+using Discord.WebSocket;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Json;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DnDSpellBot
 {
@@ -6,7 +14,21 @@ namespace DnDSpellBot
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            try
+            {
+                new SpellBot().MainAsync().GetAwaiter().GetResult();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
+
+        public Program()
+        {
+            
+        }
+
+       
     }
 }
