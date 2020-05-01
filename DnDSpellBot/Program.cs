@@ -23,12 +23,5 @@ namespace DnDSpellBot
                 Console.WriteLine(ex.Message);
             }
         }
-
-        public Program()
-        {
-            
-        }
-
-       
     }
 }
