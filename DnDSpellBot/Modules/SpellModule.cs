@@ -44,13 +44,13 @@ namespace DnDSpellBot.Modules
             for(int i = 0; i < spell.description.Length; i++)
             {
                 strSpell.Append(spell.description[i]);
-                strSpell.Append("\t");
                 strSpell.Append("\n");
             }
             strSpell.Append("\n");
 
             strSpell.Append("Spell Base Level: ");
-            strSpell.Append(spell.level.ToString());
+            if (spell.level == 0) strSpell.Append("Cantrip");
+            else strSpell.Append(spell.level.ToString());
             strSpell.Append("\n");
 
             if(spell.higherLevel != null)
@@ -131,54 +131,6 @@ namespace DnDSpellBot.Modules
             return strSpell.ToString();
         }
 
-        internal class Spell
-        {
-            public int Count = 17;
-            public string _id { get; set; }
-            public string index { get; set; }
-            public string name { get; set; }
-            [JsonProperty(PropertyName = "desc")]
-            public string[] description { get; set; } //
-            [JsonProperty(PropertyName = "higher_level")]
-            public string[] higherLevel { get; set; }
-            public string range { get; set; }
-            public string[] components { get; set; } //
-            public string material { get; set; }
-            public bool ritual { get; set; }
-            public string duration { get; set; }
-            public bool concentration { get; set; }
-            public string casting_time { get; set; }
-            public int level { get; set; }
-            public School school { get; set; } //
-            public Class[] classes { get; set; } //
-            public Subclasses[] subclasses { get; set; } //
-            public string url { get; set; }
-
-        }
-
-        internal class Description
-        {
-            public string description { get; set; }
-            public string higherLevel { get;set; }
-        }
-
-        internal class School
-        {
-            public string name { get; set; }
-            public string url { get; set; }
-        }
-        internal class Class
-        {
-            public string name { get; set; }
-            public string url { get; set; }
-        }
-        internal class Subclasses
-        {
-            public string name { get; set; }
-            public string url { get; set; }
-        }
-
-
         private async Task<Spell> GetSpells(string path)
         {
             var response = await Client.GetAsync(path);
@@ -187,6 +139,18 @@ namespace DnDSpellBot.Modules
 
             var responseData = response.Content.ReadAsStringAsync().Result;
 
+            //Spell spell = null;
+
+            //if(responseData.Length >= 2000)
+            //{
+            //    string firstHalf = responseData.Substring(0, responseData.Length / 2);
+            //    string secondHalf = responseData.Substring(responseData.Length / 2);
+            //    spell = JsonConvert.DeserializeObject<Spell>(firstHalf, secondHalf);
+            //}
+            //else
+            //{
+            //    spell = JsonConvert.DeserializeObject<Spell>(responseData);
+            //}
             var spell = JsonConvert.DeserializeObject<Spell>(responseData);
 
             return spell;
@@ -194,11 +158,11 @@ namespace DnDSpellBot.Modules
 
         private async Task<string> RunAsync(string spellSearch)
         {
-            spellSearch.TrimStart()
-                       .TrimEnd()
-                       .ToLower();
+            spellSearch = spellSearch.TrimStart()
+                                     .TrimEnd()
+                                     .ToLower();
             Match stringMatch = Regex.Match(spellSearch, StringFind.ToString());
-            if (!stringMatch.Success) return "A problem occurred... [Invalid Character Operation, likely too many spaces]";
+            if (!stringMatch.Success) return "A problem occurred... [Invalid Character Operation]";
             spellSearch = spellSearch.Replace(' ', '-');
 
             Client.BaseAddress = new Uri("http://dnd5eapi.co/api/spells/" + spellSearch + "/");
@@ -207,8 +171,12 @@ namespace DnDSpellBot.Modules
             try
             {
                 var spell = await GetSpells("http://dnd5eapi.co/api/spells/" + spellSearch + "/");
-                string stringSpell =  BuildSpell(spell);
-                return stringSpell;
+
+                string stringSpell = null;
+
+                if(spell != null) stringSpell = BuildSpell(spell);
+
+                return stringSpell ?? "That is not a spell";
             }
             catch (Exception e)
             {
