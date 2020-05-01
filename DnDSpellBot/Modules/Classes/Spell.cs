@@ -18,7 +18,7 @@ using System.Reflection;
 
 namespace DnDSpellBot.Modules.Classes
 {
-    class Spell
+    public class Spell
     {
         public int Count = 17;
         public string _id { get; set; }
@@ -41,23 +41,121 @@ namespace DnDSpellBot.Modules.Classes
         public Subclasses[] subclasses { get; set; } //
         public string url { get; set; }
 
-        internal class Description
+        public string SpellToString()
+        {
+            StringBuilder strSpell = new StringBuilder();
+
+            strSpell.Append("Spell Name: ");
+            strSpell.Append(name);
+            strSpell.Append("\n");
+
+            strSpell.Append("Spell Description: ");
+            strSpell.Append("\n");
+            for (int i = 0; i < description.Length; i++)
+            {
+                strSpell.Append(description[i]);
+                strSpell.Append("\n");
+            }
+            strSpell.Append("\n");
+
+            strSpell.Append("Spell Base Level: ");
+            if (level == 0) strSpell.Append("Cantrip");
+            else strSpell.Append(level.ToString());
+            strSpell.Append("\n");
+
+            if (higherLevel != null)
+            {
+                strSpell.Append("Spell at higher level: ");
+                strSpell.Append("\n");
+                for (int i = 0; i < higherLevel.Length; i++)
+                {
+                    strSpell.Append(higherLevel[i]);
+                    strSpell.Append("\n");
+                }
+            }
+
+            strSpell.Append("Spell Range: ");
+            strSpell.Append(range);
+            strSpell.Append("\n");
+
+            strSpell.Append("Spell Components: ");
+            if (components.Length < 0) strSpell.Append("This requires no components to cast.");
+            else
+            {
+                for (int i = 0; i < components.Length; i++)
+                {
+                    strSpell.Append(components[i]);
+                    if (i != components.Length - 1) strSpell.Append(", ");
+                }
+            }
+            strSpell.Append("\n");
+
+            if (material != null)
+            {
+                strSpell.Append("Spell Material: ");
+                strSpell.Append(material);
+                strSpell.Append("\n");
+            }
+
+            strSpell.Append("Spell Ritual? ");
+            string rit = ritual ? "This is a ritual." : "This is not a ritual";
+            strSpell.Append(rit);
+            strSpell.Append("\n");
+
+            strSpell.Append("Spell Duration: ");
+            strSpell.Append(duration);
+            strSpell.Append("\n");
+
+            strSpell.Append("Spell Concentration? ");
+            string con = concentration ? "This requires concentration" : "This does not require concentration";
+            strSpell.Append(con);
+            strSpell.Append("\n");
+
+            strSpell.Append("Spell Casting Time: ");
+            strSpell.Append(casting_time);
+            strSpell.Append("\n");
+
+            strSpell.Append("Spell School: ");
+            strSpell.Append(school.name);
+            strSpell.Append("\n");
+
+            strSpell.Append("Classes that can use this  ");
+            for (int i = 0; i < classes.Length; i++)
+            {
+                strSpell.Append(classes[i].name);
+                if (i != classes.Length - 1) strSpell.Append(", ");
+            }
+            strSpell.Append("\n");
+
+            if (subclasses.Length > 0)
+            {
+                strSpell.Append("Spell Subclasses: ");
+                for (int i = 0; i < subclasses.Length; i++)
+                {
+                    strSpell.Append(subclasses[i].name);
+                    if (i != subclasses.Length - 1) strSpell.Append(", ");
+                }
+                strSpell.Append("\n");
+            }
+            return strSpell.ToString();
+        }
+        public class Description
         {
             public string description { get; set; }
             public string higherLevel { get; set; }
         }
 
-        internal class School
+        public class School
         {
             public string name { get; set; }
             public string url { get; set; }
         }
-        internal class Class
+        public class Class
         {
             public string name { get; set; }
             public string url { get; set; }
         }
-        internal class Subclasses
+        public class Subclasses
         {
             public string name { get; set; }
             public string url { get; set; }
