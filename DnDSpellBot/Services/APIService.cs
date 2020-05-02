@@ -13,7 +13,6 @@ namespace DnDSpellBot.Services
     {
         private static readonly HttpClient Client = new HttpClient()
         {
-            //BaseAddress = new Uri("http://dnd5eapi.co/api/")
             BaseAddress = new Uri("https://api.open5e.com/")
         };
         private readonly Regex SpellFind = new Regex(@"^((?:\w+\s?\-?){1,5})$");
@@ -41,12 +40,8 @@ namespace DnDSpellBot.Services
             if (!stringMatch.Success) return null;
             spellSearch = spellSearch.Replace(' ', '-');
 
-            //Client.BaseAddress = new Uri("http://dnd5eapi.co/api/spells/" + spellSearch + "/");
-            //Client.DefaultRequestHeaders.Accept.Clear();
-            //Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("applications/json"));
             try
             {
-                //var spell = await GetSpells("http://dnd5eapi.co/api/spells/" + spellSearch + "/");
                 var spell = await GetSpells("spells/" + spellSearch + "/");
 
 
