@@ -7,6 +7,7 @@ using Newtonsoft.Json.Converters;
 
 namespace DnDSpellBot.Modules.Classes
 {
+    //JSON data
     public partial class Monsters
     {
         [JsonProperty("index")]
@@ -94,6 +95,7 @@ namespace DnDSpellBot.Modules.Classes
         public string Url { get; set; }
     }
 
+    //JSON data
     public partial class Action
     {
         [JsonProperty("name")]
@@ -115,6 +117,7 @@ namespace DnDSpellBot.Modules.Classes
         public Usage Usage { get; set; }
     }
 
+    //JSON data
     public partial class Damage
     {
         [JsonProperty("damage_type")]
@@ -127,6 +130,7 @@ namespace DnDSpellBot.Modules.Classes
         public int DamageBonus { get; set; }
     }
 
+    //JSON data
     public partial class DcTypeClass
     {
         [JsonProperty("name")]
@@ -136,6 +140,7 @@ namespace DnDSpellBot.Modules.Classes
         public string Url { get; set; }
     }
 
+    //JSON data
     public partial class Dc
     {
         [JsonProperty("dc_type")]
@@ -148,6 +153,7 @@ namespace DnDSpellBot.Modules.Classes
         public string SuccessType { get; set; }
     }
 
+    //JSON data
     public partial class Usage
     {
         [JsonProperty("type")]
@@ -157,6 +163,7 @@ namespace DnDSpellBot.Modules.Classes
         public int Times { get; set; }
     }
 
+    //JSON data
     public partial class LegendaryAction
     {
         [JsonProperty("name")]
@@ -172,6 +179,7 @@ namespace DnDSpellBot.Modules.Classes
         public Damage[] Damage { get; set; }
     }
 
+    //JSON data
     public partial class Proficiency
     {
         [JsonProperty("name")]
@@ -184,6 +192,7 @@ namespace DnDSpellBot.Modules.Classes
         public int Value { get; set; }
     }
 
+    //JSON data
     public partial class Senses
     {
         [JsonProperty("darkvision")]
@@ -193,6 +202,7 @@ namespace DnDSpellBot.Modules.Classes
         public int PassivePerception { get; set; }
     }
 
+    //JSON data
     public partial class SpecialAbility
     {
         [JsonProperty("name")]
@@ -205,6 +215,7 @@ namespace DnDSpellBot.Modules.Classes
         public Dc Dc { get; set; }
     }
 
+    //JSON data
     public partial class Speed
     {
         [JsonProperty("walk")]

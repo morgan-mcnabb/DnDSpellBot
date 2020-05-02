@@ -11,10 +11,14 @@ namespace DnDSpellBot.Modules
         [Summary("Accepts a spell and searches the DnD 5e API for the spell")]
         public async Task SpellCommand([Remainder]string spellSearch)
         {
+            //establish connection to API
             APIService spellAPI = new APIService();
+
+            //get spell data and convert to meaningful string
             var spell = await spellAPI.SpellSearchAsync(spellSearch);
             string strSpell = BuildSpell(spell);
 
+            //discord bot can't print 2000+ character per reply, so split
             if (strSpell.Length >= 2000)
             {
                 string firsthalf = strSpell.Substring(0, strSpell.Length / 2);
@@ -27,6 +31,7 @@ namespace DnDSpellBot.Modules
             else await ReplyAsync(strSpell);
         }
 
+        //build the string unless it does not exist/typo
         private string BuildSpell(Spell spell) => spell != null ? spell.SpellToString(): "I couldn't find that spell, sorry!";
     }
 }

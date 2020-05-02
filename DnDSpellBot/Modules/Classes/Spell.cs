@@ -19,6 +19,7 @@ using System.Reflection;
 namespace DnDSpellBot.Modules.Classes
 {
 
+    //JSON data
     public partial class Spell
     {
         [JsonProperty("slug")]
@@ -66,6 +67,8 @@ namespace DnDSpellBot.Modules.Classes
         [JsonProperty("circles")]
         public string Circles { get; set; }
 
+        //turns JSON data to meaningful string
+        //TODO: consolidate
         public string SpellToString()
         {
             StringBuilder strSpell = new StringBuilder();

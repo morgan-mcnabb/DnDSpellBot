@@ -9,6 +9,7 @@ using System.Text;
 
 namespace DnDSpellBot.Modules.Classes
 {
+    //JSON data
     public partial class AllSpells
     {
         [JsonProperty("count")]
@@ -18,6 +19,7 @@ namespace DnDSpellBot.Modules.Classes
         public Result[] Results { get; set; }
     }
 
+    //JSON data
     public partial class Result
     {
         [JsonProperty("name")]
@@ -30,6 +32,7 @@ namespace DnDSpellBot.Modules.Classes
         public string DndClass { get; set; }
     }
 
+    #region JSON enums
     public enum CastingTime { The10Minutes, The1Action, The1BonusAction, The1Hour, The1Minute, The8Hours };
 
     public enum Circles { ArcticForest, Desert, Empty, Forest, Swamp, Underdark };
@@ -41,4 +44,5 @@ namespace DnDSpellBot.Modules.Classes
     public enum DocumentSlug { WotcSrd };
 
     public enum DocumentTitle { SystemsReferenceDocument };
+    #endregion
 }
