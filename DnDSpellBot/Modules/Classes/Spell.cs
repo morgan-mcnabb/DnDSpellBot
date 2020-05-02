@@ -101,7 +101,7 @@ namespace DnDSpellBot.Modules.Classes
             
             strSpell.Append("\n");
 
-            if (Material != null)
+            if (Material != "")
             {
                 strSpell.Append("Spell Material: ");
                 strSpell.Append(Material);

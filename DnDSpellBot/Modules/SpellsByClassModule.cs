@@ -28,7 +28,7 @@ namespace DnDSpellBot.Modules
             }
             APIService api = new APIService();
             var allSpells = await api.GetAllSpells();
-            if (allSpells.Count == 0) await ReplyAsync("This class cannot cast spells. ");
+            if (allSpells.Count == 0) await ReplyAsync(classSearch + " cannot cast spells. ");
 
             Dictionary<string, int> classSpells = new Dictionary<string, int>();
             classSearch = char.ToUpper(classSearch[0]) + classSearch.Substring(1);
