@@ -18,6 +18,7 @@ namespace DnDSpellBot.Services
         };
         //validation for spell string
         private readonly Regex SpellFind = new Regex(@"^((?:\w+\s?\-?){1,5})$");
+        private readonly Regex MonsterFind = new Regex(@"^((?:\w+\s?\-?){1,4})$");
 
         #region Spells
 
@@ -104,6 +105,43 @@ namespace DnDSpellBot.Services
             }
             catch
             {
+                return null;
+            }
+        }
+
+        #endregion
+
+        #region Monsters
+        public async Task<Monster> GetMonster(string monsterSearch)
+        {
+            //validate monster string
+            monsterSearch = monsterSearch.TrimStart()
+                                 .TrimEnd()
+                                 .ToLower();
+            Match stringMatch = Regex.Match(monsterSearch, SpellFind.ToString());
+            if (!stringMatch.Success) return null;
+
+            //turn string into meaningful api call
+            _ = monsterSearch.Replace(' ', '-');
+
+            try
+            {
+                //consume RESTful API
+                var response = await Client.GetAsync("monsters/" + monsterSearch + "/");
+                if (!response.IsSuccessStatusCode) return null;
+
+
+                var responseData = response.Content.ReadAsStringAsync().Result;
+
+
+                //turn JSON object into meaningful data
+                var monster = JsonConvert.DeserializeObject<Monster>(responseData);
+
+                return monster;
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
                 return null;
             }
         }
