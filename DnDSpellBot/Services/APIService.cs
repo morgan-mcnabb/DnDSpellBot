@@ -1,11 +1,10 @@
-﻿using System;
+﻿using DnDSpellBot.Modules.Classes;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using DnDSpellBot.Modules.Classes;
-using Newtonsoft.Json;
 
 namespace DnDSpellBot.Services
 {
@@ -19,6 +18,7 @@ namespace DnDSpellBot.Services
         //validation for spell string
         private readonly Regex SpellFind = new Regex(@"^((?:\w+\s?\-?){1,5})$");
         private readonly Regex MonsterFind = new Regex(@"^((?:\w+\s?\-?){1,4})$");
+        private readonly Regex RemoveNonLetters = new Regex(@"[^a-zA-Z-\s+]");
 
         #region Spells
 
@@ -118,12 +118,12 @@ namespace DnDSpellBot.Services
             monsterSearch = monsterSearch.TrimStart()
                                  .TrimEnd()
                                  .ToLower();
-            Match stringMatch = Regex.Match(monsterSearch, SpellFind.ToString());
+            monsterSearch = RemoveNonLetters.Replace(monsterSearch, "");
+            Match stringMatch = Regex.Match(monsterSearch, MonsterFind.ToString());
             if (!stringMatch.Success) return null;
 
             //turn string into meaningful api call
-            _ = monsterSearch.Replace(' ', '-');
-
+            monsterSearch = monsterSearch.Replace(' ', '-');
             try
             {
                 //consume RESTful API

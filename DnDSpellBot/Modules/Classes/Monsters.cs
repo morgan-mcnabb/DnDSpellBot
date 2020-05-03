@@ -140,8 +140,8 @@ namespace DnDSpellBot.Modules.Classes
             strMonster.Append(Name + " HP: " + HitPoints);
             strMonster.Append("\n");
 
-            if(Speed.Walk != null) strMonster.Append(Name + " Walk Speed: " + Speed + "\n");
-            if(Speed.Swim != null) strMonster.Append(Name + " Swim Speed: " + Speed + "\n");
+            if(Speed.Walk != null) strMonster.Append(Name + " Walk Speed: " + Speed.Walk + "\n");
+            if(Speed.Swim != null) strMonster.Append(Name + " Swim Speed: " + Speed.Swim + "\n");
 
             if(StrengthSave != null) strMonster.Append(Name + " Strength Save: " + StrengthSave + "\n");
             if(DexteritySave != null) strMonster.Append(Name + " Dexterity Save: " + DexteritySave + "\n");
@@ -184,14 +184,14 @@ namespace DnDSpellBot.Modules.Classes
                 strMonster.Append("\n");
                 for(int i = 0; i < Actions.Length; i++)
                 {
-                    strMonster.Append(Actions[i].Name);
+                    strMonster.Append("\t" + Actions[i].Name);
                     strMonster.Append("\n");
 
                     strMonster.Append(Actions[i].Desc);
                     strMonster.Append("\n");
 
                     if (Actions[i].AttackBonus != null) strMonster.Append("Attack Bonus: +" + Actions[i].AttackBonus + "\n");
-                    if (Actions[i].DamageDice != "") strMonster.Append("Damage Dice: " + Actions[i].DamageDice + "\n");
+                    if (Actions[i].DamageDice != null) strMonster.Append("Damage Dice: " + Actions[i].DamageDice + "\n");
                     if (Actions[i].DamageBonus != null) strMonster.Append("Damage Bonus: +" + Actions[i].DamageBonus + "\n");
                 }
             }
@@ -207,14 +207,14 @@ namespace DnDSpellBot.Modules.Classes
                 strMonster.Append("\n");
                 for(int i = 0; i < LegendaryActions.Length; i++)
                 {
-                    strMonster.Append(LegendaryActions[i].Name);
+                    strMonster.Append("\t" + LegendaryActions[i].Name);
                     strMonster.Append("\n");
 
                     strMonster.Append(LegendaryActions[i].Desc);
                     strMonster.Append("\n");
 
                     if (LegendaryActions[i].AttackBonus != null) strMonster.Append("Attack Bonus: +" + LegendaryActions[i].AttackBonus + "\n");
-                    if (LegendaryActions[i].DamageDice != "") strMonster.Append("Damage Dice: " + LegendaryActions[i].DamageDice + "\n");
+                    if (LegendaryActions[i].DamageDice != null) strMonster.Append("Damage Dice: " + LegendaryActions[i].DamageDice + "\n");
                     if (LegendaryActions[i].DamageBonus != null) strMonster.Append("Damage Bonus: +" + LegendaryActions[i].DamageBonus + "\n");
                 }
             }
@@ -226,7 +226,7 @@ namespace DnDSpellBot.Modules.Classes
 
                 for (int i = 0; i < SpecialAbilities.Length; i++)
                 {
-                    strMonster.Append(SpecialAbilities[i].Name);
+                    strMonster.Append("\t" + SpecialAbilities[i].Name);
                     strMonster.Append("\n");
 
                     strMonster.Append(SpecialAbilities[i].Desc);
