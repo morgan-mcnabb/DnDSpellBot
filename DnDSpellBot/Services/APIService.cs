@@ -15,10 +15,13 @@ namespace DnDSpellBot.Services
         {
             BaseAddress = new Uri("https://api.open5e.com/")
         };
+
         //validation for spell string
         private readonly Regex SpellFind = new Regex(@"^((?:\w+\s?\-?){1,5})$");
         private readonly Regex MonsterFind = new Regex(@"^((?:\w+\s?\-?){1,4})$");
         private readonly Regex RemoveNonLetters = new Regex(@"[^a-zA-Z-\s+]");
+
+        #region Methods
 
         #region Spells
 
@@ -72,10 +75,10 @@ namespace DnDSpellBot.Services
         #region SpellsByClass
 
         //retrieves all spell data for current page
-        public async Task<AllSpells> GetData(string path)
+        public async Task<AllSpells> GetData(string className)
         {
             //establish connection to API with current page within API
-            var response = await Client.GetAsync("spells/?format=json" + path);
+            var response = await Client.GetAsync("spells/?search=" + className + "&limit=321");
             if (!response.IsSuccessStatusCode) return null;
 
 
@@ -88,20 +91,13 @@ namespace DnDSpellBot.Services
         }
 
         //logic for parsing pages in API
-        public async Task<List<AllSpells>> GetAllSpells()
+        public async Task<AllSpells> GetAllSpells(string classN)
         {
             try
             {
-                List<AllSpells> listSpells = new List<AllSpells>();
+                var spellsByClass = await GetData(classN);
 
-                //logic for page path in API, calls all spell pages and adds them to list
-                for (int i = 1; i < 8; i++)
-                {
-                    string path = "&page=" + i;
-                    listSpells.Add(await GetData(path));
-                }
-
-                return listSpells;
+                return spellsByClass;
             }
             catch
             {
@@ -148,5 +144,31 @@ namespace DnDSpellBot.Services
 
         #endregion
 
+        #region MonstersByCr
+        public async Task<MonstersByCr> GetMonstersByCR(string CR)
+        {
+            
+            try
+            {
+                var response = await Client.GetAsync("monsters/?challenge_rating=" + CR + "&limit=321");
+                if (!response.IsSuccessStatusCode) return null;
+
+                var responseData = response.Content.ReadAsStringAsync().Result;
+
+
+                //turn JSON object into meaningful data
+                var monsters = JsonConvert.DeserializeObject<MonstersByCr>(responseData);
+
+                return monsters;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        #endregion
+
+        #endregion
     }
 }

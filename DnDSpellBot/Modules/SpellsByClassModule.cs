@@ -27,27 +27,22 @@ namespace DnDSpellBot.Modules
 
             //establish connection to API and get spells
             APIService api = new APIService();
-            var allSpells = await api.GetAllSpells();
-            if (allSpells.Count == 0) await ReplyAsync(classSearch + " cannot cast spells. ");
+            var allSpells = await api.GetAllSpells(classSearch);
+            classSearch = char.ToUpper(classSearch[0]) + classSearch.Substring(1);
+            if (allSpells.Results.Length == 0)
+            {
+                await ReplyAsync(classSearch + " cannot cast spells. ");
+                return;
+            }
 
             //dictionary for printing spells by class data
             Dictionary<string, int> classSpells = new Dictionary<string, int>();
 
-            classSearch = char.ToUpper(classSearch[0]) + classSearch.Substring(1);
 
             //add spells by class data to dictionary
-            for(int i = 0; i < allSpells.Count; i++)
+            for (int i = 0; i < allSpells.Results.Length; i++)
             {
-                for(int j = 0; j < allSpells[i].Results.Length; j++)
-                {
-                    if (allSpells[i].Results[j].DndClass.Contains(classSearch)) classSpells.Add(allSpells[i].Results[j].Name, allSpells[i].Results[j].LevelInt);
-                }
-            }
-
-            if (classSpells.Count() < 1)
-            {
-                await ReplyAsync("This class cannot cast spells. ");
-                return;
+                if (allSpells.Results[i].DndClass.Contains(classSearch)) classSpells.Add(allSpells.Results[i].Name, allSpells.Results[i].LevelInt);
             }
 
             //order by spell level
