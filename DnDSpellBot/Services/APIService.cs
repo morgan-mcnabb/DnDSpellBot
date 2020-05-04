@@ -19,11 +19,63 @@ namespace DnDSpellBot.Services
         //validation for spell string
         private readonly Regex SpellFind = new Regex(@"^((?:\w+\s?\-?){1,5})$");
         private readonly Regex MonsterFind = new Regex(@"^((?:\w+\s?\-?){1,4})$");
+        private readonly Regex WeaponFind = new Regex(@"^((?:\w+\s?\-?){1,2})$");
         private readonly Regex RemoveNonLetters = new Regex(@"[^a-zA-Z-\s+]");
         private const string Limit = "&limit=321";
 
 
         #region Methods
+        public async Task<Weapons> GetAllWeapons()
+        {
+            try
+            {
+                var response = await Client.GetAsync("weapons/");
+
+                if (!response.IsSuccessStatusCode) return null;
+
+                var responseData = response.Content.ReadAsStringAsync().Result;
+
+                var weapons = JsonConvert.DeserializeObject<Weapons>(responseData);
+
+                return weapons;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<Weapons> GetWeapon(string weapon)
+        {
+            weapon = weapon.TrimEnd()
+                           .TrimStart()
+                           .ToLower();
+            string[] words;
+            if (weapon.Contains(' '))
+            {
+                words = weapon.Split(' ');
+                weapon = words[1] + ' ' + words[0];
+            }
+
+            try
+            {
+                var response = await Client.GetAsync("/weapons/?search=" + weapon);
+
+                if (!response.IsSuccessStatusCode) return null;
+
+                var responseData = response.Content.ReadAsStringAsync().Result;
+
+                var weapons = JsonConvert.DeserializeObject<Weapons>(responseData);
+
+                return weapons;
+            }
+            catch
+            {
+                return null;
+            }
+            
+        }
+        
 
         #region Spells
         //validating spell string and returning spell
@@ -72,8 +124,9 @@ namespace DnDSpellBot.Services
         {
             try
             {
+                
                 //establish connection to API with current page within API
-                var response = await Client.GetAsync("spells/?search=" + classN + "&limit=321");
+                var response = await Client.GetAsync("spells/?search=" + classN + Limit);
                 if (!response.IsSuccessStatusCode) return null;
 
 
@@ -135,7 +188,7 @@ namespace DnDSpellBot.Services
             
             try
             {
-                var response = await Client.GetAsync("monsters/?challenge_rating=" + CR + "&limit=321");
+                var response = await Client.GetAsync("monsters/?challenge_rating=" + CR + Limit);
                 if (!response.IsSuccessStatusCode) return null;
 
                 var responseData = response.Content.ReadAsStringAsync().Result;

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using DnDSpellBot.Services;
+using System.Net.Http;
 
 
 namespace DnDSpellBot
@@ -29,26 +30,24 @@ namespace DnDSpellBot
         public async Task MainAsync()
         {
             //call ConfigureServices to create a ServiceCollection/Provider for passing around the services
-            using (var services = ConfigureServices())
-            {
-                //get the discord client and assign it
-                var client = services.GetRequiredService<DiscordSocketClient>();
-                DiscordClient = client;
+            using var services = ConfigureServices();
+            //get the discord client and assign it
+            var client = services.GetRequiredService<DiscordSocketClient>();
+            DiscordClient = client;
 
-                //setup the logging and ready events
-                client.Log += LogAsync;
-                client.Ready += ReadyAsync;
-                services.GetRequiredService<CommandService>().Log += LogAsync;
+            //setup the logging and ready events
+            client.Log += LogAsync;
+            client.Ready += ReadyAsync;
+            services.GetRequiredService<CommandService>().Log += LogAsync;
 
-                //this is where we get the Token value from the configuration file and start the bot
-                await client.LoginAsync(TokenType.Bot, Config["Token"]);
-                await client.StartAsync();
+            //this is where we get the Token value from the configuration file and start the bot
+            await client.LoginAsync(TokenType.Bot, Config["Token"]);
+            await client.StartAsync();
 
-                //get the CommandHandler service and initialize(Start) it
-                await services.GetRequiredService<CommandHandler>().InitializeAsync();
+            //get the CommandHandler service and initialize(Start) it
+            await services.GetRequiredService<CommandHandler>().InitializeAsync();
 
-                await Task.Delay(-1);
-            }
+            await Task.Delay(-1);
         }
 
         private Task LogAsync(LogMessage msg)
@@ -66,12 +65,14 @@ namespace DnDSpellBot
         //handles ServiceCollection creation/configuration and builds out the service provider
         private ServiceProvider ConfigureServices()
         {
+
             //returns the ServiceProvider for use
             return new ServiceCollection()
                 .AddSingleton(Config)
                 .AddSingleton<DiscordSocketClient>()
                 .AddSingleton<CommandService>()
                 .AddSingleton<CommandHandler>()
+                .AddSingleton<HttpClient>()
                 .BuildServiceProvider();
         }
     }

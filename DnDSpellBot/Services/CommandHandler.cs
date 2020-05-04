@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace DnDSpellBot.Services
         private readonly CommandService Commands;
         private readonly IConfiguration config;
         private readonly IServiceProvider Services;
+        private readonly HttpClient ApiClient;
 
         public CommandHandler(IServiceProvider services)
         {
@@ -24,6 +26,7 @@ namespace DnDSpellBot.Services
             config = services.GetRequiredService<IConfiguration>();
             Commands = services.GetRequiredService<CommandService>();
             DiscordClient = services.GetRequiredService<DiscordSocketClient>();
+            ApiClient = services.GetRequiredService<HttpClient>();
             Services = services;
 
             //do the command when a command is executed
