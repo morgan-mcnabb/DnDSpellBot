@@ -27,7 +27,7 @@ namespace DnDSpellBot.Modules
 
             //establish connection to API and get spells
             APIService api = new APIService();
-            var allSpells = await api.GetAllSpells(classSearch);
+            var allSpells = await api.SpellsByClass(classSearch);
             classSearch = char.ToUpper(classSearch[0]) + classSearch.Substring(1);
             if (allSpells.Results.Length == 0)
             {

@@ -1,20 +1,5 @@
-﻿using Discord;
-using Discord.Net;
-using Discord.WebSocket;
-using Discord.Commands;
-using System;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using Microsoft.Extensions.Configuration;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using DnDSpellBot.Modules.Classes;
+﻿using System.Text;
 using Newtonsoft.Json;
-using System.Collections;
-using System.Reflection;
 
 namespace DnDSpellBot.Modules.Classes
 {

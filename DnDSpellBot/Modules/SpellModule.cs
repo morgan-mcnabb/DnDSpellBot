@@ -15,7 +15,7 @@ namespace DnDSpellBot.Modules
             APIService spellAPI = new APIService();
 
             //get spell data and convert to meaningful string
-            var spell = await spellAPI.SpellSearchAsync(spellSearch);
+            var spell = await spellAPI.SpellCall(spellSearch);
             string strSpell = BuildSpell(spell);
 
             //discord bot can't print 2000+ character per reply, so split

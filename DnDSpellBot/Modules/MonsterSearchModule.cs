@@ -1,10 +1,6 @@
-﻿using System.Linq;
-using System.Text;
-using Discord.Commands;
+﻿using Discord.Commands;
 using DnDSpellBot.Services;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 
 namespace DnDSpellBot.Modules
@@ -17,7 +13,7 @@ namespace DnDSpellBot.Modules
         {
             APIService api = new APIService();
 
-            var monster = await api.GetMonster(monsterString);
+            var monster = await api.MonsterCall(monsterString);
             string buildMonsterString = monster.MonsterToString();
             if (buildMonsterString.Length >= 2000)
             {
