@@ -49,7 +49,9 @@ namespace DnDSpellBot.Services
         {
             weapon = weapon.TrimEnd()
                            .TrimStart()
-                           .ToLower();
+                           .ToLower(); 
+            Match stringMatch = Regex.Match(weapon, WeaponFind.ToString());
+            if (!stringMatch.Success) return null;
             string[] words;
             if (weapon.Contains(' '))
             {

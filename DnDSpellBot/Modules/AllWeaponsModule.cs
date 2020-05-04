@@ -19,6 +19,12 @@ namespace DnDSpellBot.Modules
             APIService api = new APIService();
             var allWeapons = await api.GetAllWeapons();
 
+            if(allWeapons.Results.Length == 0)
+            {
+                await ReplyAsync("Sorry, there are no weapons!");
+                return;
+            }
+
             string printData = allWeapons.BuildWeapons();
             //discord bot can't print 2000+ character per reply, so split
             if (printData.Length >= 2000)
@@ -42,6 +48,11 @@ namespace DnDSpellBot.Modules
         {
             APIService api = new APIService();
             var weapon = await api.GetWeapon(weaponName);
+            if(weapon.Results.Length == 0)
+            {
+                await ReplyAsync("Sorry, I couldn't find a weapon with that name!");
+                return;
+            }
 
             string printData = weapon.BuildWeapons();
 
