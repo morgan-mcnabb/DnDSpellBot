@@ -20,28 +20,12 @@ namespace DnDSpellBot.Services
         private readonly Regex SpellFind = new Regex(@"^((?:\w+\s?\-?){1,5})$");
         private readonly Regex MonsterFind = new Regex(@"^((?:\w+\s?\-?){1,4})$");
         private readonly Regex RemoveNonLetters = new Regex(@"[^a-zA-Z-\s+]");
+        private const string Limit = "&limit=321";
+
 
         #region Methods
 
         #region Spells
-
-        //establishes connection to API and returns Spell object
-        private async Task<Spell> GetSpells(string path)
-        {
-            //consume RESTful API
-            var response = await Client.GetAsync(path);
-            if (!response.IsSuccessStatusCode) return null;
-
-
-            var responseData = response.Content.ReadAsStringAsync().Result;
-
-
-            //turn JSON object into meaningful data
-            var spell = JsonConvert.DeserializeObject<Spell>(responseData);
-
-            return spell;
-        }
-
         //validating spell string and returning spell
         public async Task<Spell> SpellSearchAsync(string spellSearch)
         {
@@ -58,11 +42,20 @@ namespace DnDSpellBot.Services
 
             try
             {
-                //get spell
-                var spell = await GetSpells("spells/" + spellSearch + "/");
+                string path = "spells/" + spellSearch + "/";
 
+                var response = await Client.GetAsync(path);
+                if (!response.IsSuccessStatusCode) return null;
+
+
+                var responseData = response.Content.ReadAsStringAsync().Result;
+
+
+                //turn JSON object into meaningful data
+                var spell = JsonConvert.DeserializeObject<Spell>(responseData);
 
                 return spell;
+                
             }
             catch (Exception e)
             {
@@ -74,30 +67,22 @@ namespace DnDSpellBot.Services
 
         #region SpellsByClass
 
-        //retrieves all spell data for current page
-        public async Task<AllSpells> GetData(string className)
-        {
-            //establish connection to API with current page within API
-            var response = await Client.GetAsync("spells/?search=" + className + "&limit=321");
-            if (!response.IsSuccessStatusCode) return null;
-
-
-            var responseData = response.Content.ReadAsStringAsync().Result;
-
-            //turn JSON data into meanigful AllSpell object
-            var allSpells = JsonConvert.DeserializeObject<AllSpells>(responseData);
-
-            return allSpells;
-        }
-
         //logic for parsing pages in API
         public async Task<AllSpells> GetAllSpells(string classN)
         {
             try
             {
-                var spellsByClass = await GetData(classN);
+                //establish connection to API with current page within API
+                var response = await Client.GetAsync("spells/?search=" + classN + "&limit=321");
+                if (!response.IsSuccessStatusCode) return null;
 
-                return spellsByClass;
+
+                var responseData = response.Content.ReadAsStringAsync().Result;
+
+                //turn JSON data into meanigful AllSpell object
+                var allSpells = JsonConvert.DeserializeObject<AllSpells>(responseData);
+
+                return allSpells;
             }
             catch
             {
