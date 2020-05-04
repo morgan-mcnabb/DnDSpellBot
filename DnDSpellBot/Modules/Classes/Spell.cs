@@ -76,6 +76,7 @@ namespace DnDSpellBot.Modules.Classes
                 strSpell.Append("Spell at higher level: ");
                 strSpell.Append("\n");
                 strSpell.Append(HigherLevel);
+                strSpell.Append("\n");
             }
 
             strSpell.Append("Spell Range: ");
