@@ -1,12 +1,6 @@
-﻿using System.Linq;
-using System.Text;
-using Discord.Commands;
+﻿using Discord.Commands;
 using DnDSpellBot.Services;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-
-
 
 namespace DnDSpellBot.Modules
 {
@@ -17,7 +11,7 @@ namespace DnDSpellBot.Modules
         public async Task Weapons()
         {
             APIService api = new APIService();
-            var allWeapons = await api.GetAllWeapons();
+            var allWeapons = await api.AllWeaponsCall();
 
             if(allWeapons.Results.Length == 0)
             {
@@ -47,7 +41,7 @@ namespace DnDSpellBot.Modules
         public async Task FindWeapon([Remainder]string weaponName)
         {
             APIService api = new APIService();
-            var weapon = await api.GetWeapon(weaponName);
+            var weapon = await api.WeaponCall(weaponName);
             if(weapon.Results.Length == 0)
             {
                 await ReplyAsync("Sorry, I couldn't find a weapon with that name!");

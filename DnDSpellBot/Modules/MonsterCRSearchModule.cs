@@ -1,9 +1,6 @@
-﻿using System.Linq;
-using System.Text;
-using Discord.Commands;
+﻿using Discord.Commands;
 using DnDSpellBot.Services;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace DnDSpellBot.Modules
@@ -20,7 +17,7 @@ namespace DnDSpellBot.Modules
 
             RemoveNonNumbers.Replace(CR, "");
             APIService api = new APIService();
-            var monsters = await api.GetMonstersByCR(CR);
+            var monsters = await api.MonstersByCRCall(CR);
             if (monsters.Monsters.Length == 0)
             {
                 await ReplyAsync("No monsters were found with that challenge rating, sorry!");
