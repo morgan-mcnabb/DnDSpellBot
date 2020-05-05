@@ -92,11 +92,11 @@ namespace DnDSpellBot.Modules.Classes
 
             if (SpellcastingAbility.Length != 0) strClass.Append(Name + " Spellcasting Ability: " + "\n");
 
-            if(Archetypes.Length != 0)
+            if (Archetypes.Length != 0)
             {
                 strClass.Append(Name + " Archetypes: ");
                 strClass.Append("\n");
-                for(int i = 0; i < Archetypes.Length; i++)
+                for (int i = 0; i < Archetypes.Length; i++)
                 {
                     strClass.Append("\t" + Archetypes[i].Name);
                     strClass.Append("\n");
@@ -119,4 +119,12 @@ namespace DnDSpellBot.Modules.Classes
         public string Desc { get; set; }
     }
 
+    public partial class AllClasses
+    {
+        [JsonProperty("count")]
+        public long Count { get; set; }
+
+        [JsonProperty("results")]
+        public Classes[] Results { get; set; }
+    }
 }
