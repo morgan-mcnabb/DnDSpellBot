@@ -125,4 +125,12 @@ namespace DnDSpellBot.Modules.Classes
         }
 
     }
+    public partial class AllSpells
+    {
+        [JsonProperty("count")]
+        public int Count { get; set; }
+
+        [JsonProperty("results")]
+        public Spell[] Results { get; set; }
+    }
 }
