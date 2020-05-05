@@ -36,5 +36,25 @@ namespace DnDSpellBot.Services.APICalls
                 return null;
             }
         }
+
+        public async Task<AllClasses> AllClassesAsync(HttpClient Client)
+        {
+            try
+            {
+                var response = await Client.GetAsync("classes/");
+
+                if (!response.IsSuccessStatusCode) return null;
+
+                var responseData = response.Content.ReadAsStringAsync().Result;
+
+                var classData = JsonConvert.DeserializeObject<AllClasses>(responseData);
+
+                return classData;
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 }

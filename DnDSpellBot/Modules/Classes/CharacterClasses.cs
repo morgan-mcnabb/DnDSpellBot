@@ -45,9 +45,6 @@ namespace DnDSpellBot.Modules.Classes
         [JsonProperty("spellcasting_ability")]
         public string SpellcastingAbility { get; set; }
 
-        [JsonProperty("subtypes_name")]
-        public string SubtypesName { get; set; }
-
         [JsonProperty("archetypes")]
         public Archetype[] Archetypes { get; set; }
 
@@ -126,5 +123,21 @@ namespace DnDSpellBot.Modules.Classes
 
         [JsonProperty("results")]
         public Classes[] Results { get; set; }
+
+        public string BuildClasses()
+        {
+            StringBuilder strClass = new StringBuilder();
+
+            strClass.Append("\t" + "All Classes: ");
+            strClass.Append("\n");
+
+            for (int i = 0; i < Results.Length; i++)
+            {
+                strClass.Append(Results[i].Name);
+                strClass.Append("\n");
+            }
+
+            return strClass.ToString();
+        }
     }
 }
