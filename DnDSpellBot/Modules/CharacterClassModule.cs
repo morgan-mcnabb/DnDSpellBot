@@ -36,5 +36,17 @@ namespace DnDSpellBot.Modules
             }
 
         }
+
+        [Command("allclasses")]
+        public async Task GetClasses()
+        {
+            APIService api = new APIService();
+
+            var classes = await api.GetClassesCall();
+
+            string printData = classes.BuildClasses();
+
+            await ReplyAsync(printData);
+        }
     }
 }

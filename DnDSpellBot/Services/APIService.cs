@@ -25,6 +25,7 @@ namespace DnDSpellBot.Services
         public async Task<MonstersByCr> MonstersByCRCall(string CR) => await new MonsterAPICalls().SearchMonstersByCR(Client, CR, Limit);
         public async Task<MagicItems> MagicItemCall(string magicItemName) => await new MagicItemCalls().MagicItemSearchAsync(Client, magicItemName);
         public async Task<Classes> ClassSearchCall(string className) => await new CharacterClassCalls().ClassSearchAsync(Client, className);
+        public async Task<AllClasses> GetClassesCall() => await new CharacterClassCalls().AllClassesAsync(Client);
 
         #endregion
     }
