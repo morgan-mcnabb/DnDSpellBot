@@ -236,6 +236,40 @@ namespace DnDSpellBot.Modules.Classes
         }
     }
 
+
+    public partial class MonstersByCr
+    {
+        [JsonProperty("count")]
+        public long Count { get; set; }
+
+        [JsonProperty("results")]
+        public Monsters[] Results { get; set; }
+        public string BuildMonster(string CR)
+        {
+            StringBuilder strMonsters = new StringBuilder();
+
+            strMonsters.Append("\t");
+            strMonsters.Append("All Monsters with CR " + CR + ":");
+            strMonsters.Append("\n");
+
+            for (int i = 0; i < Results.Length; i++)
+            {
+                strMonsters.Append(Results[i].Name);
+                strMonsters.Append("\n");
+            }
+
+            return strMonsters.ToString();
+        }
+    }
+
+    //This shouldn't be here. For some reason, I can't have the type Monster[] for the MonstersByCr class above.
+    //Unless I'm overlooking something trivial, I can't get the other way to work so here's the hacky way.
+    public partial class Monsters
+    {
+        [JsonProperty("name")]
+        public string Name { get; set; }
+    }
+
     //JSON data
     public partial class Action
     {
@@ -307,5 +341,6 @@ namespace DnDSpellBot.Modules.Classes
     }
 
 
-    
+
+
 }

@@ -7,17 +7,38 @@ using System.Threading.Tasks;
 
 namespace DnDSpellBot.Services.APICalls
 {
-
-    
     class MonsterAPICalls
     {
-        private readonly Regex MonsterFind = new Regex(@"^((?:\w+\s?\-?){1,4})$");
-        private readonly Regex RemoveNonLetters = new Regex(@"[^a-zA-Z-\s+]");
+       
+
+        public async Task<MonstersByCr> SearchMonstersByCR(HttpClient Client, string CR, string Limit)
+        {
+            try
+            {
+                var response = await Client.GetAsync("monsters/?challenge_rating=" + CR + Limit);
+                if (!response.IsSuccessStatusCode) return null;
+
+                var responseData = response.Content.ReadAsStringAsync().Result;
+
+
+                //turn JSON object into meaningful data
+                var monsters = JsonConvert.DeserializeObject<MonstersByCr>(responseData);
+
+                return monsters;
+            }
+            catch
+            {
+                return null;
+            }
+        }
 
         public async Task<Monster> MonsterSearchAsync(HttpClient Client, string monsterSearch)
         {
-            //validate monster string
-            monsterSearch = monsterSearch.TrimStart()
+             Regex MonsterFind = new Regex(@"^((?:\w+\s?\-?){1,4})$");
+             Regex RemoveNonLetters = new Regex(@"[^a-zA-Z-\s+]");
+
+        //validate monster string
+        monsterSearch = monsterSearch.TrimStart()
                                  .TrimEnd()
                                  .ToLower();
             monsterSearch = RemoveNonLetters.Replace(monsterSearch, "");
@@ -48,25 +69,5 @@ namespace DnDSpellBot.Services.APICalls
             }
         }
 
-        public async Task<MonstersByCr> SearchMonstersByCR(HttpClient Client, string CR, string Limit)
-        {
-            try
-            {
-                var response = await Client.GetAsync("monsters/?challenge_rating=" + CR + Limit);
-                if (!response.IsSuccessStatusCode) return null;
-
-                var responseData = response.Content.ReadAsStringAsync().Result;
-
-
-                //turn JSON object into meaningful data
-                var monsters = JsonConvert.DeserializeObject<MonstersByCr>(responseData);
-
-                return monsters;
-            }
-            catch
-            {
-                return null;
-            }
-        }
     }
 }
